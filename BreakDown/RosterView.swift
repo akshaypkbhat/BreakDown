@@ -1,10 +1,3 @@
-//
-//  RosterView.swift
-//  BreakDown
-//
-//  Created by Akshay Bhatia on 1/23/25.
-//
-
 import SwiftUI
 
 struct RosterView: View {
@@ -12,12 +5,20 @@ struct RosterView: View {
 
     var body: some View {
         NavigationView {
+            // List all Players
             List(players) { player in
-                HStack {
-                    Text(player.name)
-                    Spacer()
-                    Text(player.position.rawValue)
-                        .foregroundColor(.gray)
+                // Make the entire row tappable to navigate to the edit view
+                NavigationLink(destination: AddPlayerView(players: $players, playerToEdit: player)) {
+                    HStack {
+                        Text(player.name)
+                        Spacer()
+                        Text("No. \(player.playerNumber)") // Display player number
+                            .foregroundColor(.gray)
+                        Text(player.position.rawValue)
+                            .foregroundColor(.blue)
+                            .font(.subheadline)
+                    }
+                    .padding()
                 }
             }
             .navigationTitle("Player Roster")

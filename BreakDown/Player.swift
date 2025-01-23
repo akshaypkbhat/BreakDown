@@ -9,12 +9,13 @@ import Foundation
 
 enum Position: String, CaseIterable {
     case offense = "Offense"
-    case defense = "Defense"
     case both = "Both"
+    case defense = "Defense"
 }
 
 struct Player: Identifiable {
     var id = UUID()
     var name: String
     var position: Position
+    var playerNumber: Int
 }
