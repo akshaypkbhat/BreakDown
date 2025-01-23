@@ -8,15 +8,32 @@
 import SwiftUI
 
 struct LinesView: View {
+    @State private var lines: [Line] = []
+    @State private var showingCreateLineView = false
+    
     var body: some View {
-        VStack {
-            Text("Lines View")
-                .font(.largeTitle)
-                .padding()
-            
-            // Your Lines content goes here...
+        NavigationView {
+            List {
+                ForEach(lines) { line in
+                    VStack(alignment: .leading) {
+                        Text(line.name)
+                            .font(.headline)
+                        Text("Players: \(line.starters.map { $0.name }.joined(separator: ", "))")
+                            .font(.subheadline)
+                    }
+                    .padding()
+                }
+            }
+            .navigationTitle("Lines")
+            .toolbar {
+                Button("Create Line") {
+                    showingCreateLineView = true
+                }
+            }
+            .sheet(isPresented: $showingCreateLineView) {
+                CreateLineView(lines: $lines)
+            }
         }
-        .navigationTitle("Lines")
     }
 }
 

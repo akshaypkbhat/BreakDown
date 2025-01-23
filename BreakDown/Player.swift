@@ -13,7 +13,7 @@ enum Position: String, CaseIterable {
     case defense = "Defense"
 }
 
-struct Player: Identifiable {
+struct Player: Identifiable, Hashable {
     var id = UUID()
     var name: String
     var position: Position

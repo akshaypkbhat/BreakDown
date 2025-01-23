@@ -21,7 +21,7 @@ struct RosterView: View {
                     .padding()
                 }
             }
-            .navigationTitle("Player Roster")
+            .navigationTitle("Roster")
             .toolbar {
                 NavigationLink(destination: AddPlayerView(players: $players)) {
                     Text("Add Player")
