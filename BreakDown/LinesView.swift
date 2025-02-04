@@ -1,28 +1,26 @@
-//
-//  LinesView.swift
-//  BreakDown
-//
-//  Created by Akshay Bhatia on 1/23/25.
-//
-
 import SwiftUI
 
 struct LinesView: View {
-    @State private var lines: [Line] = []
-    @State private var showingCreateLineView = false
+    @Binding var lines: [Line] // Pass lines from RosterView
+    @Binding var players: [Player] // Pass roster players
     
+    @State private var showingCreateLineView = false
+
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 ForEach(lines) { line in
-                    VStack(alignment: .leading) {
-                        Text(line.name)
-                            .font(.headline)
-                        Text("Players: \(line.starters.map { $0.name }.joined(separator: ", "))")
-                            .font(.subheadline)
+                    NavigationLink(destination: EditLineView(line: line, players: $players)) {
+                        VStack(alignment: .leading) {
+                            Text(line.name)
+                                .font(.headline)
+                            Text("Players: \(line.players.map { $0.name }.joined(separator: ", "))")
+                                .font(.subheadline)
+                        }
+                        .padding()
                     }
-                    .padding()
                 }
+                .onDelete(perform: deleteLine) // Enable swipe-to-delete
             }
             .navigationTitle("Lines")
             .toolbar {
@@ -31,9 +29,12 @@ struct LinesView: View {
                 }
             }
             .sheet(isPresented: $showingCreateLineView) {
-                CreateLineView(lines: $lines)
+                CreateLineView(lines: $lines, players: $players) // Ensure players are passed here
             }
         }
     }
-}
 
+    private func deleteLine(at offsets: IndexSet) {
+        lines.remove(atOffsets: offsets)
+    }
+}

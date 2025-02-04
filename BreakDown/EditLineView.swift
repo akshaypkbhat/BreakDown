@@ -1,17 +1,22 @@
 import SwiftUI
 
-struct CreateLineView: View {
-    @Binding var lines: [Line]
+struct EditLineView: View {
+    @State var line: Line
     @Binding var players: [Player]
     
-    @State private var lineName = ""
-    @State private var selectedPlayers: [Player] = [] // Players added to the line
+    @State private var selectedPlayers: [Player]
+
+    init(line: Line, players: Binding<[Player]>) {
+        self._line = State(initialValue: line)
+        self._players = players
+        self._selectedPlayers = State(initialValue: line.players)
+    }
 
     var body: some View {
         Form {
             // Line name
             Section(header: Text("Line Name")) {
-                TextField("Enter Line Name", text: $lineName)
+                TextField("Enter Line Name", text: $line.name)
             }
 
             // List of players
@@ -40,16 +45,14 @@ struct CreateLineView: View {
             }
 
             // Save the line
-            Button("Save Line") {
-                if !lineName.isEmpty {
-                    let newLine = Line(name: lineName, players: selectedPlayers)
-                    lines.append(newLine) // Save the new line
-                    clearForm()
-                }
+            Button("Save Changes") {
+                line.players = selectedPlayers
+                // Update the line in the parent view
+                // This might require additional logic to update the line in the lines array
             }
-            .disabled(lineName.isEmpty) // Only disable if line name is empty
+            .disabled(line.name.isEmpty) // Only disable if line name is empty
         }
-        .navigationTitle("Create Line")
+        .navigationTitle("Edit Line")
     }
 
     private func togglePlayerSelection(_ player: Player) {
@@ -59,9 +62,4 @@ struct CreateLineView: View {
             selectedPlayers.append(player)
         }
     }
-
-    private func clearForm() {
-        lineName = ""
-        selectedPlayers.removeAll()
-    }
-}
+} 

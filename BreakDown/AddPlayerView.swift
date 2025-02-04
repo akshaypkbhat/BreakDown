@@ -33,7 +33,7 @@ struct AddPlayerView: View {
                             self.playerNumber = String($0.prefix(2)) // Limit number to two digits
                         }
                 }
-
+                
                 Button(playerToEdit == nil ? "Add Player" : "Save Changes") {
                     if let number = Int(playerNumber), !playerName.isEmpty {
                         if let existingPlayer = playerToEdit {

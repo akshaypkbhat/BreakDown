@@ -8,8 +8,9 @@
 import Foundation
 
 // Define the Line model to hold the starters and substitutes
-struct Line: Identifiable {
+struct Line: Identifiable, Equatable {
     var id = UUID()
     var name: String
     var players: [Player]
 }
+
